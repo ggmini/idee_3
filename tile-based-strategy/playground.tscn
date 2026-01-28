@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://jleeqr0col03" path="res://tile_map_layer.gd" id="2_is3ju"]
 [ext_resource type="PackedScene" uid="uid://f8np6xecoi1l" path="res://entities/player/player_entity.tscn" id="4_is3ju"]
 [ext_resource type="PackedScene" uid="uid://cc2iy4k3vkwab" path="res://entities/enemy/enemy_entity.tscn" id="5_o00ia"]
+[ext_resource type="Script" uid="uid://cjfmirmwcwsme" path="res://camera_2d.gd" id="5_o00ia"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wt17y"]
 texture = ExtResource("1_rupst")
@@ -66,11 +67,12 @@ custom_data_layer_0/name = "Walkable"
 custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_wt17y")
 
-[node name="Playground" type="Node2D" unique_id=1787202232 node_paths=PackedStringArray("map", "entity_name", "entity_range")]
+[node name="Playground" type="Node2D" unique_id=1787202232 node_paths=PackedStringArray("map", "entity_name", "entity_range", "cam")]
 script = ExtResource("1_o00ia")
 map = NodePath("TileMapLayer")
 entity_name = NodePath("CanvasLayer/Control/VBoxContainer/EntityName")
 entity_range = NodePath("CanvasLayer/Control/VBoxContainer/EntityRange")
+cam = NodePath("Camera2D")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=946696396]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAIAAAACAAAAAAADAAEAAAACAAAAAAAEAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAIAAAABAAEAAAAEAAIAAAABAAEAAAAFAAEAAAABAAEAAAABAAIAAAABAAMAAAAAAAIAAAABAAMAAAAFAAIAAAAFAAAAAAAFAAAAAAAHAAAAAAAFAP//AAAFAAAAAAAGAAAAAAAHAAAAAAAGAAEAAAACAAMAAAAGAAIAAAACAAMAAAAGAAMAAAACAAMAAAAFAAMAAAACAAMAAAAFAAQAAAAHAAAAAAAEAAQAAAACAAMAAAADAAMAAAACAAMAAAAEAAMAAAACAAMAAAACAAMAAAACAAMAAAAGAAQAAAAHAAAAAAAHAAQAAAAHAAAAAAAHAAUAAAAHAAAAAAAGAAUAAAAHAAAAAAAGAP//AAAHAAAAAAA=")
@@ -109,6 +111,10 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1922563321]
+zoom = Vector2(4, 4)
+script = ExtResource("5_o00ia")
+moveSpeed = 6.0
 [node name="EndTurnButton" type="Button" parent="CanvasLayer/Control" unique_id=564828251]
 layout_mode = 1
 anchors_preset = 2
@@ -128,10 +134,6 @@ anchor_bottom = 1.0
 grow_vertical = 2
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/normal_font_size = 28
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1271243000]
-position = Vector2(172, 117)
-zoom = Vector2(3.285, 3.285)
 
 [node name="PlayerEntity" parent="." unique_id=154661158 node_paths=PackedStringArray("map", "log_label") instance=ExtResource("4_is3ju")]
 position = Vector2(15, 10)
