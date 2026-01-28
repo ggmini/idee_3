@@ -9,6 +9,3 @@ script = ExtResource("1_uqc13")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=54014540]
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_nwmpt")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=875468380]
-zoom = Vector2(4, 4)

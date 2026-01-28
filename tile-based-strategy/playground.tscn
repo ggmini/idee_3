@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://ygw6olg32lod" path="res://fantasyhextiles_v3_borderless.png" id="1_rupst"]
 [ext_resource type="Script" uid="uid://jleeqr0col03" path="res://tile_map_layer.gd" id="2_is3ju"]
 [ext_resource type="PackedScene" uid="uid://bonc8k7grij6l" path="res://entity.tscn" id="4_is3ju"]
+[ext_resource type="Script" uid="uid://cjfmirmwcwsme" path="res://camera_2d.gd" id="5_o00ia"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wt17y"]
 texture = ExtResource("1_rupst")
@@ -65,11 +66,12 @@ custom_data_layer_0/name = "Walkable"
 custom_data_layer_0/type = 2
 sources/0 = SubResource("TileSetAtlasSource_wt17y")
 
-[node name="Playground" type="Node2D" unique_id=1787202232 node_paths=PackedStringArray("map", "entity_name", "entity_range")]
+[node name="Playground" type="Node2D" unique_id=1787202232 node_paths=PackedStringArray("map", "entity_name", "entity_range", "cam")]
 script = ExtResource("1_o00ia")
 map = NodePath("TileMapLayer")
 entity_name = NodePath("CanvasLayer/Control/VBoxContainer/EntityName")
 entity_range = NodePath("CanvasLayer/Control/VBoxContainer/EntityRange")
+cam = NodePath("Camera2D")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=946696396]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABAAEAAAAAAAAAAAACAAIAAAACAAAAAAADAAEAAAACAAAAAAAEAAEAAAAAAAAAAAAEAAAAAAAAAAAAAAADAAIAAAABAAEAAAAEAAIAAAABAAEAAAAFAAEAAAABAAEAAAABAAIAAAABAAMAAAAAAAIAAAABAAMAAAAFAAIAAAAFAAAAAAAFAAAAAAAHAAAAAAAFAP//AAAFAAAAAAAGAAAAAAAHAAAAAAAGAAEAAAACAAMAAAAGAAIAAAACAAMAAAAGAAMAAAACAAMAAAAFAAMAAAACAAMAAAAFAAQAAAAHAAAAAAAEAAQAAAACAAMAAAADAAMAAAACAAMAAAAEAAMAAAACAAMAAAACAAMAAAACAAMAAAAGAAQAAAAHAAAAAAAHAAQAAAAHAAAAAAAHAAUAAAAHAAAAAAAGAAUAAAAHAAAAAAAGAP//AAAHAAAAAAA=")
@@ -108,3 +110,8 @@ text = "Name"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1922563321]
+zoom = Vector2(4, 4)
+script = ExtResource("5_o00ia")
+moveSpeed = 6.0
