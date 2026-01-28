@@ -38,7 +38,7 @@ func _input(event: InputEvent) -> void:
 func _on_entity_selected(entity: Entity):
 	self.active_entity = entity
 	entity_name.text = entity.entity_name
-	entity_range.text = str(entity.entity_range)
+	entity_range.text = str(entity.range_left)
 
 
 func entity_attack():
