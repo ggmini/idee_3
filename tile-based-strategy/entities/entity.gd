@@ -13,9 +13,10 @@ signal selected(entity: Entity)
 @export var entity_range: int = 4
 @export var tween_duration: float = 0.2
 
-var health: int
-
 var map_position: Vector2i
+
+var health: int = 10
+var attack_range: int = 1
 
 var is_moving: bool = false
 var range_left: int = 4
