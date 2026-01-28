@@ -9,12 +9,13 @@ extends Node2D
 @export var entity_range: RichTextLabel
 
 var active_entity: Entity
-
+var entities: Array[Entity]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for child in self.get_children():
 		if child is Entity:
+			entities.append(child)
 			child.selected.connect(_on_entity_selected)
 
 
@@ -25,11 +26,24 @@ func _process(_delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("click"):
+		if active_entity:
+			print("deselect")
+			active_entity = null
+			refresh_ui()
+		for e in entities:
+			var click_mouse_position = get_global_mouse_position()
+			var click_map_position = map.local_to_map(click_mouse_position)
+			e.check_for_selection(click_map_position)
+	
+	if event.is_action_pressed("right_click"):
+		print("move")
 		if not active_entity:
+			print("fail")
 			return
 		var click_position = get_global_mouse_position()
 		var seleted_cell = map.local_to_map(click_position)
-		active_entity.move_to_cell(seleted_cell)
+		await active_entity.move_to_cell(seleted_cell)
+		refresh_ui()
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_MASK_RIGHT:
 			entity_attack()
@@ -37,8 +51,15 @@ func _input(event: InputEvent) -> void:
 
 func _on_entity_selected(entity: Entity):
 	self.active_entity = entity
-	entity_name.text = entity.entity_name
-	entity_range.text = str(entity.range_left)
+	refresh_ui()
+
+func refresh_ui():
+	if not active_entity:
+		entity_name.text = "N/A"
+		entity_range.text = "N/A"
+		return
+	entity_name.text = active_entity.entity_name
+	entity_range.text = str(active_entity.range_left)
 
 
 func entity_attack():

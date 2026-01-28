@@ -33,12 +33,9 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("click"):
-		var click_mouse_position = get_global_mouse_position()
-		var click_map_position = map.local_to_map(click_mouse_position)
-		if click_map_position == self.map_position:
-			selected.emit(self)
+func check_for_selection(position: Vector2i) -> void:
+	if position == self.map_position:
+		selected.emit(self)
 
 
 func move_to_cell(new_map_position: Vector2i):
