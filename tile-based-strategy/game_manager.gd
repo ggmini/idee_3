@@ -7,6 +7,9 @@ extends Node2D
 @export_category("UI")
 @export var entity_name: RichTextLabel
 @export var entity_range: RichTextLabel
+var range_display: Array[Sprite2D]
+var marker_scene = load("res://movement_marker.tscn")
+
 
 var active_entity: Entity
 var entities: Array[Entity]
@@ -18,22 +21,18 @@ func _ready() -> void:
 			entities.append(child)
 			child.selected.connect(_on_entity_selected)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("click"):
 		if active_entity:
-			print("deselect")
 			active_entity = null
+			clear_range_display()
 			refresh_ui()
 		for e in entities:
 			var click_mouse_position = get_global_mouse_position()
 			var click_map_position = map.local_to_map(click_mouse_position)
 			e.check_for_selection(click_map_position)
+			if active_entity:
+				get_range_display(click_map_position)
 	
 	if event.is_action_pressed("right_click"):
 		print("move")
@@ -41,9 +40,10 @@ func _input(event: InputEvent) -> void:
 			print("fail")
 			return
 		var click_position = get_global_mouse_position()
-		var seleted_cell = map.local_to_map(click_position)
-		await active_entity.move_to_cell(seleted_cell)
+		var selected_cell = map.local_to_map(click_position)
+		await active_entity.move_to_cell(selected_cell)
 		refresh_ui()
+		get_range_display(selected_cell)
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_MASK_RIGHT:
 			entity_attack()
@@ -61,6 +61,27 @@ func refresh_ui():
 	entity_name.text = active_entity.entity_name
 	entity_range.text = str(active_entity.range_left)
 
+func clear_range_display() -> void:
+	for marker in range_display:
+		marker.queue_free()
+	range_display.clear()
+
+func get_range_display(pos: Vector2i) -> void:
+	clear_range_display()
+	
+	var cells = map.get_used_cells()
+	for cell in cells:
+		var path: PackedVector2Array = map.get_map_path(pos, cell)
+		if not path:
+			return
+		if path.size() > 0:
+			path.remove_at(0)
+		if path.size() < active_entity.range_left+1:
+			#create display fragment
+			var marker = marker_scene.instantiate()
+			add_child(marker)
+			range_display.append(marker)
+			marker.position = map.map_to_local(cell)
 
 func entity_attack():
 	if not active_entity:

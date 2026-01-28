@@ -33,8 +33,8 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func check_for_selection(position: Vector2i) -> void:
-	if position == self.map_position:
+func check_for_selection(_position: Vector2i) -> void:
+	if _position == self.map_position:
 		selected.emit(self)
 
 
