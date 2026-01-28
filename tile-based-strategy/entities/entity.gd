@@ -3,15 +3,19 @@ extends Node2D
 
 
 signal selected(entity: Entity)
-
+signal range_left_changed(entity: Entity, new_value: int)
 
 @export_category("Components")
 @export var map: Map
+@export var log_label: RichTextLabel
 
 @export_category("Parameters")
 @export var entity_name: String
 @export var entity_range: int = 4
 @export var tween_duration: float = 0.2
+
+@export_category("Stats")
+@export var attack_val: int = 2
 
 var map_position: Vector2i
 
@@ -19,7 +23,8 @@ var health: int = 10
 var attack_range: int = 1
 
 var is_moving: bool = false
-var range_left: int = 4
+var range_left: int = 4 : set = set_range_left
+
 
 
 # Called when the node enters the scene tree for the first time.
@@ -65,10 +70,31 @@ func _move_to_position(new_position: Vector2) -> Signal:
 func _range_to_default() -> void:
 	self.range_left = self.entity_range
 
+
+func attack(entity: Entity):
+	if (self is PlayerEntity and entity is PlayerEntity
+	or self is EnemyEntity and entity is EnemyEntity):
+		print("tried attacking ally, aborting")
+		return
+	
+	entity.take_damage(attack_val)
+
+
 func take_damage(damage: int) -> void:
 	health -= damage
 	if health <= 0:
 		die()
-		
+
+
 func die() -> void:
 	self.queue_free()
+
+
+func set_range_left(value: int):
+	range_left = value
+	range_left_changed.emit(self, range_left)
+
+
+func add_line_to_log(line: String):
+	log_label.text += "\n"
+	log_label.text += line

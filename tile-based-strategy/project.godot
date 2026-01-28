@@ -17,12 +17,17 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-TurnManager="*uid://c8112j2c5bg7w"
+TurnManager="*uid://dq4blpbpq0r6t"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+
+[global_group]
+
+PlayerEntity=""
+EnemyEntity=""
 
 [input]
 

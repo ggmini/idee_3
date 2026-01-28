@@ -10,12 +10,17 @@ extends Node2D
 
 var active_entity: Entity
 
+@onready var end_turn_button: Button = $CanvasLayer/Control/EndTurnButton
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	end_turn_button.pressed.connect(_on_end_turn_button_pressed)
+	
 	for child in self.get_children():
 		if child is Entity:
 			child.selected.connect(_on_entity_selected)
+			child.range_left_changed.connect(_on_range_left_changed)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -60,6 +65,9 @@ func entity_attack():
 		return
 	
 	active_entity.attack(target_entity)
+	active_entity.add_line_to_log(active_entity.name + " is attacking " + target_entity.name + " for " + str(active_entity.attack_val))
+	TurnManager.end_turn()
+
 
 
 func get_entity_at_pos(pos: Vector2i):
@@ -69,3 +77,13 @@ func get_entity_at_pos(pos: Vector2i):
 				return child
 	
 	return null
+
+
+func _on_range_left_changed(entity: Entity, new_val: int):
+	if entity == active_entity:
+		entity_range.text = str(new_val)
+
+
+func _on_end_turn_button_pressed():
+	if TurnManager.active_side == TurnManager.sides.PLAYER:
+		TurnManager.end_turn()
