@@ -43,7 +43,10 @@ func _input(event: InputEvent) -> void:
 		var selected_cell = map.local_to_map(click_position)
 		await active_entity.move_to_cell(selected_cell)
 		refresh_ui()
-		get_range_display(selected_cell)
+		if (active_entity.range_left > 0):
+			get_range_display(selected_cell)
+		else:
+			clear_range_display()
 	elif event is InputEventMouseButton and event.is_pressed():
 		if event.button_index == MOUSE_BUTTON_MASK_RIGHT:
 			entity_attack()
@@ -68,12 +71,16 @@ func clear_range_display() -> void:
 
 func get_range_display(pos: Vector2i) -> void:
 	clear_range_display()
+	print(pos)
 	
 	var cells = map.get_used_cells()
 	for cell in cells:
+		print(cell)
 		var path: PackedVector2Array = map.get_map_path(pos, cell)
+		if cell.x == pos.x and cell.y == pos.y:
+			continue
 		if not path:
-			return
+			continue
 		if path.size() > 0:
 			path.remove_at(0)
 		if path.size() < active_entity.range_left+1:
