@@ -1,8 +1,6 @@
 [gd_scene format=3 uid="uid://c5vomy2acx0wh"]
 
 [ext_resource type="Texture2D" uid="uid://fg2fqnhqfqk4" path="res://marker_hex.png" id="1_encn1"]
-[ext_resource type="Script" uid="uid://cmug18yvvle44" path="res://movement_marker.gd" id="2_b2d8b"]
 
 [node name="movement_marker" type="Sprite2D" unique_id=172283723]
 texture = ExtResource("1_encn1")
-script = ExtResource("2_b2d8b")
